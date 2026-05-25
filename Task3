@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Clock & Stopwatch</title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial, sans-serif;
+        }
+
+        body{
+            height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            background:linear-gradient(135deg, #c084fc, #7c3aed);
+        }
+
+        .container{
+            width:360px;
+            background:white;
+            padding:30px;
+            border-radius:20px;
+            text-align:center;
+
+            /* OUTER BORDER */
+            border:6px solid #6a0dad;
+
+            box-shadow:0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        h1{
+            color:#6a0dad;
+            margin-bottom:20px;
+        }
+
+        .clock{
+            font-size:40px;
+            font-weight:bold;
+            color:#333;
+            margin-bottom:30px;
+
+            border:3px solid #a855f7;
+            padding:15px;
+            border-radius:15px;
+        }
+
+        .subtitle{
+            font-size:20px;
+            color:#555;
+            margin-bottom:10px;
+        }
+
+        .stopwatch{
+            font-size:35px;
+            font-weight:bold;
+            color:#333;
+            margin-bottom:20px;
+
+            border:3px solid #a855f7;
+            padding:15px;
+            border-radius:15px;
+        }
+
+        .buttons button{
+            padding:10px 18px;
+            margin:5px;
+            border:none;
+            border-radius:10px;
+            cursor:pointer;
+            font-size:16px;
+            color:white;
+            transition:0.3s;
+        }
+
+        .start{
+            background:#22c55e;
+        }
+
+        .pause{
+            background:#facc15;
+            color:black;
+        }
+
+        .reset{
+            background:#ef4444;
+        }
+
+        .buttons button:hover{
+            transform:scale(1.05);
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Digital Clock</h1>
+
+        <div class="clock" id="clock">
+            00:00:00
+        </div>
+
+        <div class="subtitle">Stopwatch</div>
+
+        <div class="stopwatch" id="stopwatch">
+            00:00:00
+        </div>
+
+        <div class="buttons">
+            <button class="start" onclick="startStopwatch()">Start</button>
+            <button class="pause" onclick="pauseStopwatch()">Pause</button>
+            <button class="reset" onclick="resetStopwatch()">Reset</button>
+        </div>
+
+    </div>
+
+    <script>
+
+        // DIGITAL CLOCK
+
+        function updateClock(){
+
+            let now = new Date();
+
+            let hours = String(now.getHours()).padStart(2, '0');
+            let minutes = String(now.getMinutes()).padStart(2, '0');
+            let seconds = String(now.getSeconds()).padStart(2, '0');
+
+            document.getElementById("clock").innerHTML =
+                `${hours}:${minutes}:${seconds}`;
+        }
+
+        setInterval(updateClock, 1000);
+
+        updateClock();
+
+
+
+        // STOPWATCH
+
+        let hours = 0;
+        let minutes = 0;
+        let seconds = 0;
+
+        let timer = null;
+
+        function updateStopwatch(){
+
+            seconds++;
+
+            if(seconds == 60){
+                seconds = 0;
+                minutes++;
+            }
+
+            if(minutes == 60){
+                minutes = 0;
+                hours++;
+            }
+
+            let h = String(hours).padStart(2,'0');
+            let m = String(minutes).padStart(2,'0');
+            let s = String(seconds).padStart(2,'0');
+
+            document.getElementById("stopwatch").innerHTML =
+                `${h}:${m}:${s}`;
+        }
+
+        function startStopwatch(){
+
+            if(timer !== null){
+                clearInterval(timer);
+            }
+
+            timer = setInterval(updateStopwatch,1000);
+        }
+
+        function pauseStopwatch(){
+            clearInterval(timer);
+        }
+
+        function resetStopwatch(){
+
+            clearInterval(timer);
+
+            hours = 0;
+            minutes = 0;
+            seconds = 0;
+
+            document.getElementById("stopwatch").innerHTML =
+                "00:00:00";
+        }
+
+    </script>
+
+</body>
+</html>
